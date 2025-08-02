@@ -18,9 +18,128 @@ let startY;
 let dataURL = "testImage.png";
 let template;
 
-toolbar.addEventListener('click', e => {
+
+
+async function whenDoneDrawing() {
+
+    const { PopoverElement, Marker3DInteractiveElement } = await importAndReturnMarker();
+    const popover = new PopoverElement({
+        open: true,
+    });
+    popover.append(positions[0].name);
+
+
+
+
+    isPainting = false;
+    ctx.stroke();
+    ctx.beginPath();
+    dataURL = resizeDataURL(canvas, 128, 128);
+    console.log("dataURL: ", dataURL);
+    console.log("OLD IMAGE: ", template.content.querySelector("#markerImg").src);
+    template.content.querySelector("#markerImg").src = dataURL;
+    console.log("UPDATED");
+    let markers = map3DElement.querySelectorAll('gmp-marker-3d');
+    markers.forEach(marker => map3DElement.removeChild(marker));
+    markers = map3DElement.querySelectorAll('gmp-marker-3d-interactive');
+    markers.forEach(marker => map3DElement.removeChild(marker));
+    const newTemplate = document.createElement("template");
+    newTemplate.innerHTML = `
+        <img
+            src="${dataURL}" id="markerImg"
+            style="width: 100px; height: 100px; display: block;"
+        >
+    `;
+
+
+    const newMarker = new Marker3DInteractiveElement({
+        position: { lat: 42.0597, lng: 88.1096, altitude: 2350 },
+        extruded: true,
+        altitudeMode: "ABSOLUTE",
+        gmpPopoverTargetElement: popover,
+        // billboard: true,
+    });
+
+    newMarker.append(newTemplate);
+
+
+
+
+
+
+    newMarker.addEventListener('gmp-click', (event) => {
+        // map.flyCameraAround({
+        //     camera: originalCamera,
+        //     durationMillis: 50000,
+        //     rounds: 1
+        // });
+        console.log("whatup");
+        overlay = document.createElement("div");
+        overlay.style.width = "100vw";
+        overlay.style.height = "100vh";
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.zIndex = "9999";
+        overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+
+        closeButton = document.createElement("button");
+        closeButton.innerHTML = "<img src='closeIcon.png' style='width: 32px; height: 32px;'>";
+        closeButton.style.position = "absolute";
+        closeButton.style.top = "20px";
+        closeButton.style.right = "20px";
+        closeButton.style.fontSize = "16px";
+        closeButton.style.cursor = "pointer";
+        closeButton.style.border = "none";
+        closeButton.style.borderRadius = "5px";
+        closeButton.style.backgroundColor = "transparent";
+        closeButton.addEventListener("click", () => {
+            overlay.remove();
+        });
+
+
+        overlay.appendChild(closeButton);
+        document.body.appendChild(overlay);
+    });
+
+
+
+
+    map3DElement.append(newMarker);
+    map3DElement.append(popover);
+}
+
+
+
+toolbar.addEventListener('click', async (e) => {
     if (e.target.id === 'clear') {
+        const { PopoverElement, Marker3DInteractiveElement } = await importAndReturnMarker();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        dataURL = resizeDataURL(canvas, 128, 128);
+        template.content.querySelector("#markerImg").src = dataURL;
+        let markers = map3DElement.querySelectorAll('gmp-marker-3d');
+        markers.forEach(marker => map3DElement.removeChild(marker));
+        markers = map3DElement.querySelectorAll('gmp-marker-3d-interactive');
+        markers.forEach(marker => map3DElement.removeChild(marker));
+        const newTemplate = document.createElement("template");
+        newTemplate.innerHTML = `
+        <img
+            src="${dataURL}" id="markerImg"
+            style="width: 100px; height: 100px; display: block;"
+        >
+    `;
+
+
+        const newMarker = new Marker3DInteractiveElement({
+            position: { lat: 42.0597, lng: 88.1096, altitude: 2350 },
+            extruded: true,
+            altitudeMode: "ABSOLUTE",
+            // billboard: true,
+        });
+
+        newMarker.append(newTemplate);
+        map3DElement.append(newMarker);
     }
 });
 
@@ -77,67 +196,7 @@ const positions = [{
 
 
 canvas.addEventListener('mouseup', async (e) => {
-    // const { Map3DElement, Marker3DElement } = await googlemaps.importLibrary("maps3d");
-    const { PopoverElement, Marker3DInteractiveElement } = await importAndReturnMarker();
-    const popover = new PopoverElement({
-        open: true,
-    });
-    popover.append(positions[0].name);
-
-
-
-
-    isPainting = false;
-    ctx.stroke();
-    ctx.beginPath();
-    dataURL = resizeDataURL(canvas, 128, 128);
-    console.log("dataURL: ", dataURL);
-    console.log("OLD IMAGE: ", template.content.querySelector("#markerImg").src);
-    template.content.querySelector("#markerImg").src = dataURL;
-    console.log("UPDATED");
-    const markers = map3DElement.querySelectorAll('gmp-marker-3d');
-    markers.forEach(marker => map3DElement.removeChild(marker));
-    const newTemplate = document.createElement("template");
-    newTemplate.innerHTML = `
-        <img
-            src="${dataURL}" id="markerImg"
-            style="width: 100px; height: 100px; display: block;"
-        >
-    `;
-
-
-    const newMarker = new Marker3DInteractiveElement({
-        position: { lat: 42.0597, lng: 88.1096, altitude: 20 },
-        extruded: true,
-        altitudeMode: "ABSOLUTE",
-        gmpPopoverTargetElement: popover,
-    });
-
-    newMarker.append(newTemplate);
-
-
-
-
-
-
-    newMarker.addEventListener('gmp-click', (event) => {
-        // map.flyCameraAround({
-        //     camera: originalCamera,
-        //     durationMillis: 50000,
-        //     rounds: 1
-        // });
-        console.log("whatup");
-    });
-
-
-
-
-    map3DElement.append(newMarker);
-    map3DElement.append(popover);
-
-
-
-
+    whenDoneDrawing();
 });
 
 canvas.addEventListener('mousemove', draw);
@@ -168,73 +227,7 @@ canvas.addEventListener('touchmove', e => {
 });
 
 canvas.addEventListener('touchend', async (e) => {
-    isPainting = false;
-    ctx.stroke();
-    ctx.beginPath();
-
-
-
-
-
-
-    // const { Map3DElement, Marker3DElement } = await googlemaps.importLibrary("maps3d");
-    const { PopoverElement, Marker3DInteractiveElement } = await importAndReturnMarker();
-    const popover = new PopoverElement({
-        open: true,
-    });
-    popover.append(positions[0].name);
-
-
-
-
-    isPainting = false;
-    ctx.stroke();
-    ctx.beginPath();
-    dataURL = resizeDataURL(canvas, 128, 128);
-    console.log("dataURL: ", dataURL);
-    console.log("OLD IMAGE: ", template.content.querySelector("#markerImg").src);
-    template.content.querySelector("#markerImg").src = dataURL;
-    console.log("UPDATED");
-    const markers = map3DElement.querySelectorAll('gmp-marker-3d');
-    markers.forEach(marker => map3DElement.removeChild(marker));
-    const newTemplate = document.createElement("template");
-    newTemplate.innerHTML = `
-        <img
-            src="${dataURL}" id="markerImg"
-            style="width: 100px; height: 100px; display: block;"
-        >
-    `;
-
-
-    const newMarker = new Marker3DInteractiveElement({
-        position: { lat: 42.0597, lng: 88.1096, altitude: 20 },
-        extruded: true,
-        altitudeMode: "ABSOLUTE",
-        gmpPopoverTargetElement: popover,
-    });
-
-    newMarker.append(newTemplate);
-
-
-
-
-
-
-    newMarker.addEventListener('gmp-click', (event) => {
-        // map.flyCameraAround({
-        //     camera: originalCamera,
-        //     durationMillis: 50000,
-        //     rounds: 1
-        // });
-        console.log("whatup");
-    });
-
-
-
-
-    map3DElement.append(newMarker);
-    map3DElement.append(popover);
-
+    whenDoneDrawing();
 });
 
 window.addEventListener("resize", () => {
@@ -266,12 +259,12 @@ let map3DElement;
 
 async function initMap() {
     const maps3d = await google.maps.importLibrary("maps3d");
-    const { Map3DElement, Marker3DElement } = maps3d;
+    const { Map3DElement, Marker3DInteractiveElement } = maps3d;
     const { PinElement } = await google.maps.importLibrary("marker");
 
     map3DElement = new Map3DElement({
         center: { lat: 42.0597, lng: 88.1096, altitude: 100 },
-        // range: 2650,
+        range: 3650,
         tilt: 65,
         heading: 0,
         mode: "SATELLITE",
@@ -309,14 +302,20 @@ async function initMap() {
         scale: 0.5,
         glyphColor: "blue",
     });
-    marker = new Marker3DElement({
-        position: { lat: 42.0597, lng: 88.1096, altitude: 20 },
+    marker = new Marker3DInteractiveElement({
+        position: { lat: 42.0597, lng: 88.1096, altitude: 2350 },
         extruded: true,
         altitudeMode: "ABSOLUTE",
+        // billboard: true,
     });
     // pinScaled.append(template);
     marker.append(template);
     // marker.append(pinScaled);
+
+
+
+
+
 
 
 
