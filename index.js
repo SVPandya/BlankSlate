@@ -86,6 +86,7 @@ canvas.addEventListener('mouseup', async (e) => {
 
 
 
+
     isPainting = false;
     ctx.stroke();
     ctx.beginPath();
@@ -113,8 +114,29 @@ canvas.addEventListener('mouseup', async (e) => {
     });
 
     newMarker.append(newTemplate);
+
+
+
+
+
+
+    newMarker.addEventListener('gmp-click', (event) => {
+        // map.flyCameraAround({
+        //     camera: originalCamera,
+        //     durationMillis: 50000,
+        //     rounds: 1
+        // });
+        console.log("whatup");
+    });
+
+
+
+
     map3DElement.append(newMarker);
     map3DElement.append(popover);
+
+
+
 
 });
 
@@ -145,10 +167,74 @@ canvas.addEventListener('touchmove', e => {
     ctx.stroke();
 });
 
-canvas.addEventListener('touchend', e => {
+canvas.addEventListener('touchend', async (e) => {
     isPainting = false;
     ctx.stroke();
     ctx.beginPath();
+
+
+
+
+
+
+    // const { Map3DElement, Marker3DElement } = await googlemaps.importLibrary("maps3d");
+    const { PopoverElement, Marker3DInteractiveElement } = await importAndReturnMarker();
+    const popover = new PopoverElement({
+        open: true,
+    });
+    popover.append(positions[0].name);
+
+
+
+
+    isPainting = false;
+    ctx.stroke();
+    ctx.beginPath();
+    dataURL = resizeDataURL(canvas, 128, 128);
+    console.log("dataURL: ", dataURL);
+    console.log("OLD IMAGE: ", template.content.querySelector("#markerImg").src);
+    template.content.querySelector("#markerImg").src = dataURL;
+    console.log("UPDATED");
+    const markers = map3DElement.querySelectorAll('gmp-marker-3d');
+    markers.forEach(marker => map3DElement.removeChild(marker));
+    const newTemplate = document.createElement("template");
+    newTemplate.innerHTML = `
+        <img
+            src="${dataURL}" id="markerImg"
+            style="width: 100px; height: 100px; display: block;"
+        >
+    `;
+
+
+    const newMarker = new Marker3DInteractiveElement({
+        position: { lat: 42.0597, lng: 88.1096, altitude: 20 },
+        extruded: true,
+        altitudeMode: "ABSOLUTE",
+        gmpPopoverTargetElement: popover,
+    });
+
+    newMarker.append(newTemplate);
+
+
+
+
+
+
+    newMarker.addEventListener('gmp-click', (event) => {
+        // map.flyCameraAround({
+        //     camera: originalCamera,
+        //     durationMillis: 50000,
+        //     rounds: 1
+        // });
+        console.log("whatup");
+    });
+
+
+
+
+    map3DElement.append(newMarker);
+    map3DElement.append(popover);
+
 });
 
 window.addEventListener("resize", () => {
