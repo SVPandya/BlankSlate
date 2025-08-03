@@ -254,10 +254,36 @@ toolbar.addEventListener('click', async (e) => {
 
         dataURL = resizeDataURL(canvas, 128, 128);
         template.content.querySelector("#markerImg").src = dataURL;
-        let markers = map3DElement.querySelectorAll('gmp-marker-3d');
-        markers.forEach(marker => map3DElement.removeChild(marker));
-        markers = map3DElement.querySelectorAll('gmp-marker-3d-interactive');
-        markers.forEach(marker => map3DElement.removeChild(marker));
+        // let markers = map3DElement.querySelectorAll('gmp-marker-3d');
+        // markers.forEach(marker => map3DElement.removeChild(marker));
+        // markers = map3DElement.querySelectorAll('gmp-marker-3d-interactive');
+        // markers.forEach(marker => map3DElement.removeChild(marker));
+
+
+        const index = markerLocations.findIndex(loc =>
+            loc[0] === activeLat && loc[1] === activeLng
+        );
+        if (index !== -1) {
+            const markers = map3DElement.querySelectorAll('gmp-marker-3d-interactive');
+
+            markers.forEach(marker => {
+                // const lat = parseFloat(marker.getAttribute('lat'));
+                // const lng = parseFloat(marker.getAttribute('lng'));
+                const lat = marker.position.lat;
+                const lng = marker.position.lng;
+
+                console.log(`activeLat: ${activeLat}, activeLng: ${activeLng}`);
+                console.log(`marker lat: ${lat}, lng: ${lng}`);
+
+
+                if (lat === activeLat && lng === activeLng) {
+                    console.log(`marker being removed: ${marker.position.lat}`);
+                    map3DElement.removeChild(marker);
+                }
+            });
+        }
+
+
         const newTemplate = document.createElement("template");
         newTemplate.innerHTML = `
         <img
@@ -267,7 +293,7 @@ toolbar.addEventListener('click', async (e) => {
     `;
 
         const newMarker = new Marker3DInteractiveElement({
-            position: { lat: 42.0597, lng: 88.1096, altitude: 2350 },
+            position: { lat: activeLat, lng: activeLng, altitude: 2350 },
             altitudeMode: "ABSOLUTE",
         });
 
