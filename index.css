@@ -4,6 +4,7 @@ body {
     height: 100%;
     overflow: hidden;
     color: white;
+    font-family: "Roboto", sans-serif;
 }
 
 h1 {
@@ -23,8 +24,9 @@ h1 {
 #toolbar {
     display: flex;
     flex-direction: column;
-    padding: 5px;
-    width: 70px;
+    padding: 15px;
+    /* width: 70px; */
+    width: 20vw;
     background-color: #202020;
 }
 
@@ -33,7 +35,7 @@ h1 {
 }
 
 #toolbar label {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 #toolbar input {
@@ -41,20 +43,25 @@ h1 {
 }
 
 #toolbar button {
-    background-color: #1565c0;
+    /* background-color: #1565c0; */
+    background-color: #4c4c4c;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     color: white;
-    padding: 2px;
+    padding: 3%;
 }
 
 #drawing-board {
-    border: 2px solid green;
-    border-radius: 50%;
-    width: 300px;
-    height: 300px;
+    /* border: 2px solid black; */
+    border-radius: 15px;
+    width: 80vw;
+    height: 100vh;
 }
 
 template {
     max-width: 5px;
+}
+
+#stroke {
+    height: 10%;
 }

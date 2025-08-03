@@ -14,6 +14,7 @@ let startX;
 let startY;
 let dataURL = "testImage.png";
 let template;
+ctx.strokeStyle = "#fff";
 
 
 
@@ -55,6 +56,13 @@ function resizeDataURL(originalCanvas, targetWidth, targetHeight) {
     resizedCanvas.height = targetHeight;
 
     const ctx = resizedCanvas.getContext('2d');
+
+
+    ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+    // ctx.style.borderRadius = "10px";
+    // ctx.fillRect(0, 0, targetWidth, targetHeight);
+    ctx.roundRect(0, 0, targetWidth, targetHeight, [20]);
+    ctx.fill();
     ctx.drawImage(originalCanvas, 0, 0, targetWidth, targetHeight);
 
     return resizedCanvas.toDataURL();

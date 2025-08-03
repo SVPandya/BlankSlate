@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlankSlate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="index.css">
     <script src="config.js"></script>
     <script>
@@ -25,9 +29,9 @@
         <div id="toolbar">
             <h1>Draw</h1>
             <label for="stroke">Stroke</label>
-            <input id="stroke" name="stroke" type="color">
+            <input id="stroke" name="stroke" type="color" value="#ffffff">
             <label for="lineWidth">Line Width</label>
-            <input type="number" value="3" id="lineWidth" name="lineWidth">
+            <input type="range" min="1" max="10" value="3" id="lineWidth" name="lineWidth">
             <button id="clear">Clear</button>
         </div>
         <div class="drawing-board">
