@@ -18,6 +18,8 @@ ctx.strokeStyle = "#fff";
 
 
 
+
+
 // DRAWING
 toolbar.addEventListener('change', e => {
     if (e.target.id === 'stroke') {
@@ -242,6 +244,8 @@ function addOverlay(latAndLng) {
         // overlay.remove();
         document.body.removeChild(overlay);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        console.log(`all srcs: ${markerImageSrc}`);
+        console.log(`all locations: ${markerLocations}`);
     });
 
 
@@ -313,9 +317,42 @@ toolbar.addEventListener('click', async (e) => {
 
 
 
+addMarkerBtn = document.querySelector("#addMarker")
+addMarkerLat = parseFloat(document.querySelector("#addMarkerLat").value);
+addMarkerLng = parseFloat(document.querySelector("#addMarkerLng").value);
+
+addMarkerBtn.addEventListener("click", async (e) => {
+    activeLat = addMarkerLat;
+    activeLng = addMarkerLng;
+    markerLocations.push([activeLat, activeLng]);
+    console.log(`all locations: ${markerLocations}`);
+
+    // RIGHT NOW, THE LOCATIONS ARRAY IS BEING UPDATED BUT NOT THE TEMPLATE, FOR THE TEMPLATE IT IS JUST 
+    // USING THE FIRST ONE IN THE TEMPLATES ARRAY. NEED TO UPDATE THAT TOO
+    addOverlay([activeLat, activeLng]);
 
 
+    const { PopoverElement, Marker3DInteractiveElement } = await importAndReturnMarker();
+    template = document.createElement("template");
+    template.innerHTML = markerTemplates[0];
+    console.log("gets here");
+    const marker = new Marker3DInteractiveElement({
+        position: { lat: activeLat, lng: activeLng, altitude: 2350 },
+        extruded: true,
+        altitudeMode: "ABSOLUTE",
+    });
 
+    marker.append(template);
+
+    marker.addEventListener('gmp-click', (event) => {
+        addOverlay([marker.position.lat, marker.position.lng]);
+    });
+
+    map3DElement.append(marker);
+    console.log("should be added");
+    // addOverlay([addMarkerLat, addMarkerLng]);
+
+});
 
 
 
@@ -385,4 +422,7 @@ async function initMap() {
     const container = document.getElementById("map");
     container.innerHTML = "";
     container.appendChild(map3DElement);
+
+
 }
+
