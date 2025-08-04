@@ -42,13 +42,15 @@ h1 {
     width: 100%;
 }
 
-#toolbar button {
+.btn {
     /* background-color: #1565c0; */
-    background-color: #4c4c4c;
+    /* background-color: #4c4c4c; */
+    background-color: #131314;
     border: none;
     border-radius: 8px;
-    color: white;
+    color: #a1a1a1;
     padding: 3%;
+    font-size: 14px;
 }
 
 #drawing-board {
@@ -66,7 +68,7 @@ template {
     height: 10%;
 }
 
-#mainControls {
+/* #mainControls {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -75,4 +77,62 @@ template {
 .mainControlsContainer {
     height: 100%;
     display: flex;
+} */
+
+#mainControls {
+    position: absolute;
+    bottom: 95px;
+    /* bottom: 30px; */
+    right: 60px;
+    z-index: 10;
+    padding: 6px 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    /* background-color: #7F7FD5; */
+    /* border: 1px solid #ccc; */
+    border-radius: 12px;
+    /* cursor: pointer; */
+    width: 32.16%;
+    /* width: 40%; */
+    text-align: center;
+    display: none;
+}
+
+#mainControls * {
+    margin: 0 1px;
+}
+
+.otherControls {
+    position: absolute;
+    bottom: 100px;
+    /* bottom: 37px; */
+    right: 8px;
+    z-index: 10;
+    padding: 9px 10px;
+    background-color: #131314;
+    /* background-color: #7F7FD5; */
+    /* border: 1px solid #ccc; */
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    /* width: 26%; */
+}
+
+#testText {
+    margin: 0;
+    /* color: #8e8e8f; */
+}
+
+
+
+#addMarker:hover {
+    cursor: pointer;
+}
+
+.addMarkerText {
+    border-radius: 5px;
+    border: 1px solid #131314;
+    height: 40px;
+    padding: 0 5px;
+    background: #131314;
+    color: #a1a1a1;
 }

@@ -16,8 +16,26 @@ let dataURL = "testImage.png";
 let template;
 ctx.strokeStyle = "#fff";
 
+document.querySelector(".otherControls").addEventListener("click", () => {
+    if (document.querySelector("#mainControls").style.display === "block") {
+        document.querySelector("#mainControls").style.display = "none";
+    }
+    else {
+        document.querySelector("#mainControls").style.display = "block";
+    }
+});
 
 
+
+document.querySelector(".otherControls").addEventListener('mouseover', () => {
+    document.querySelector(".otherControls").style.backgroundColor = "#062e6f";
+    document.querySelector('#addMarkerIcon').setAttribute("fill", "#fff");
+});
+
+document.querySelector(".otherControls").addEventListener('mouseout', () => {
+    document.querySelector(".otherControls").style.backgroundColor = "#131314";
+    document.querySelector("#addMarkerIcon").setAttribute("fill", "#8e8e8f");
+});
 
 
 // DRAWING
