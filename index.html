@@ -7,7 +7,10 @@
     <title>BlankSlate</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="index.css">
     <script src="config.js"></script>
@@ -25,13 +28,18 @@
 </head>
 
 <body>
+    <nav>
+        <a href="index.html" class="navbar">BlankSlate</a>
+        <a href="#about" class="navbar">About</a>
+    </nav>
+
     <section class="container">
         <div id="toolbar">
             <h1>Draw</h1>
             <label for="stroke">Stroke</label>
             <input id="stroke" name="stroke" type="color" value="#ffffff">
             <label for="lineWidth">Line Width</label>
-            <input type="range" min="1" max="10" value="5" id="lineWidth" name="lineWidth">
+            <input type="range" min="1" max="20" value="5" id="lineWidth" name="lineWidth">
             <button id="clear" class="btn">Clear</button>
         </div>
         <div class="drawing-board">
@@ -42,7 +50,7 @@
         <div id="mainControls">
             <input type="text" value="41.9597" id="addMarkerLat" class="addMarkerText">
             <input type="text" value="88.1096" id="addMarkerLng" class="addMarkerText">
-            <button id="addMarker" class="btn">Add Marker</button>
+            <button id="addMarker" class="addMarkerText" style="padding: 0 16px;">Add Marker</button>
         </div>
         <button class="otherControls">
             <h4 id="testText"><svg id='addMarkerIcon' xmlns="http://www.w3.org/2000/svg" height="24px"

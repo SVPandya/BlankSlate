@@ -7,6 +7,76 @@ body {
     font-family: "Roboto", sans-serif;
 }
 
+nav {
+    display: flex;
+    align-items: center;
+    height: 6vh;
+    background-color: rgb(0, 0, 0, 0.4);
+    /* padding: 10px; */
+    /* border-radius: 50px; */
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+    font-size: 110%;
+    position: fixed;
+    /* left: 25%; */
+    /* top: 2%; */
+    z-index: 2;
+    backdrop-filter: blur(6px);
+}
+
+.navbar {
+    color: #F5F5F5;
+    text-decoration: none;
+    margin: 6%;
+    font-weight: 300;
+    font-size: 120%;
+    opacity: 0;
+    transform: translateX(0);
+    animation: slideOut 0.5s ease forwards;
+    transition: all 0.2s ease;
+}
+
+.navbar:hover {
+    color: #131314;
+}
+
+.navbar:nth-child(1) {
+    animation-delay: 0.2s;
+    animation-name: slideLeft;
+}
+
+.navbar:nth-child(2) {
+    animation-delay: 0.4s;
+    animation-name: slideRight;
+}
+
+
+@keyframes slideLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-50px);
+    }
+}
+
+@keyframes slideRight {
+    0% {
+        opacity: 0;
+        transform: translateX(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(50px);
+    }
+}
+
+
 h1 {
     background: #7F7FD5;
     background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
@@ -46,10 +116,12 @@ h1 {
     /* background-color: #1565c0; */
     /* background-color: #4c4c4c; */
     background-color: #131314;
-    border: none;
-    border-radius: 8px;
+    border: 1px solid #131314;
+    border-radius: 5px;
     color: #a1a1a1;
-    padding: 3%;
+    height: 40px;
+    /* padding: 0 3.05%; */
+    padding: 10px 5px;
     font-size: 14px;
 }
 
@@ -85,20 +157,24 @@ template {
     /* bottom: 30px; */
     right: 60px;
     z-index: 10;
-    padding: 6px 10px;
+    padding: 6px;
     background-color: rgba(0, 0, 0, 0.3);
     /* background-color: #7F7FD5; */
     /* border: 1px solid #ccc; */
     border-radius: 12px;
     /* cursor: pointer; */
-    width: 32.16%;
-    /* width: 40%; */
+    /* width: 32.16%; */
+    width: 473px;
     text-align: center;
     display: none;
 }
 
 #mainControls * {
     margin: 0 1px;
+    font-family: "Quicksand";
+    /* font-size: 14px; */
+    font-size: 15px;
+    font-weight: 700;
 }
 
 .otherControls {
@@ -126,11 +202,13 @@ template {
 
 #addMarker:hover {
     cursor: pointer;
+    background-color: #062e6f;
+    color: white;
 }
 
 .addMarkerText {
-    border-radius: 5px;
-    border: 1px solid #131314;
+    border-radius: 10px;
+    border: none;
     height: 40px;
     padding: 0 5px;
     background: #131314;

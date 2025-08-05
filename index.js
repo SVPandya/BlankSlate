@@ -2,10 +2,22 @@ const canvas = document.querySelector("#drawing-board");
 const toolbar = document.querySelector("#toolbar");
 const ctx = canvas.getContext('2d');
 
+
+// const canvasOffsetX = canvas.offsetLeft;
+// const canvasOffsetY = canvas.offsetTop + 6;
+// canvas.width = canvas.clientWidth;
+// canvas.height = canvas.clientHeight;
+
+// Convert 6vh to pixels:
+const sixVHInPx = window.innerHeight * 0.6;
+
 const canvasOffsetX = canvas.offsetLeft;
-const canvasOffsetY = canvas.offsetTop;
+const canvasOffsetY = canvas.offsetTop + 60;
+
 canvas.width = canvas.clientWidth;
 canvas.height = canvas.clientHeight;
+
+
 
 
 let isPainting = false;
@@ -53,9 +65,11 @@ const draw = (e) => {
     if (!isPainting) {
         return;
     }
+    // const x = e.clientX - canvasOffsetX;
+    // const y = e.clientY - canvasOffsetY;
     ctx.lineWidth = lineWidth;
     ctx.lineCap = 'round';
-    ctx.lineTo(e.clientX - canvasOffsetX, e.clientY);
+    ctx.lineTo(e.clientX - canvasOffsetX, e.clientY - canvasOffsetY);
     ctx.stroke();
 }
 
@@ -240,7 +254,7 @@ function addOverlay(latAndLng) {
     overlay.style.width = "100vw";
     overlay.style.height = "100vh";
     overlay.style.position = "fixed";
-    overlay.style.top = "0";
+    overlay.style.top = "6vh";
     overlay.style.left = "0";
     overlay.style.zIndex = "9999";
     overlay.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
@@ -248,7 +262,7 @@ function addOverlay(latAndLng) {
     closeButton = document.createElement("button");
     closeButton.innerHTML = "<img src='closeIcon.png' style='width: 32px; height: 32px;'>";
     closeButton.style.position = "absolute";
-    closeButton.style.top = "20px";
+    closeButton.style.top = "3%";
     closeButton.style.right = "20px";
     closeButton.style.fontSize = "16px";
     closeButton.style.cursor = "pointer";
