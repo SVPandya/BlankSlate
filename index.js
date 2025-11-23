@@ -451,10 +451,13 @@ async function initMap() {
 
 
 
+
     const container = document.getElementById("map");
     container.innerHTML = "";
     container.appendChild(map3DElement);
 
 
 }
+
+
 
