@@ -350,12 +350,91 @@ toolbar.addEventListener('click', async (e) => {
 
 
 addMarkerBtn = document.querySelector("#addMarker")
-addMarkerLat = parseFloat(document.querySelector("#addMarkerLat").value);
-addMarkerLng = parseFloat(document.querySelector("#addMarkerLng").value);
+
 
 addMarkerBtn.addEventListener("click", async (e) => {
+    const suggestionsBox = document.querySelector("#suggestions")
+    addressInp = document.querySelector("#addressInput");
+
+
+
+
+
+    const service = new google.maps.places.PlacesService(document.createElement("div"));
+
+    addressInp.addEventListener("input", () => {
+        const query = addressInp.value.trim();
+
+        if (addressInp.length < 2) {
+            suggestionsBox.style.display = "none";
+            return;
+        }
+
+        const request = {
+            query: query
+        };
+
+        service.textSearch(request, (results, status) => {
+            suggestionsBox.innerHTML = '';
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                results = results.slice(0, 5);
+                results.forEach(place => {
+                    const div = document.createElement("div");
+                    div.style.padding = "5px";
+                    div.style.cursor = "pointer";
+                    div.textContent = `${place.name}, ${place.formatted_address}`;
+
+                    div.addEventListener("click", () => {
+                        locationInput.value = place.formatted_address;
+                        suggestionsBox.style.display = "none";
+                        var geocoder = new google.maps.Geocoder();
+                        address = document.getElementById("location").value;
+                        var body = document.body;
+                        geocoder.geocode({ 'address': locationInput.value }, function (results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                // results[0].geometry.location.latitude;
+                                // results[0].geometry.location.longitude;
+                                var lat = results[0].geometry.location.lat();
+                                var lng = results[0].geometry.location.lng();
+                                console.log(lat, ", ", lng);
+                                selectedLat = lat;
+                                selectedLng = lng;
+
+
+
+                            }
+                        });
+
+                    });
+                    suggestionsBox.appendChild(div);
+                });
+                suggestionsBox.style.display = "block";
+            } else {
+                suggestionsBox.style.display = "none";
+            }
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    addMarkerLat = parseFloat(document.querySelector("#addMarkerLat").value);
+    addMarkerLng = parseFloat(document.querySelector("#addMarkerLng").value);
     activeLat = addMarkerLat;
     activeLng = addMarkerLng;
+    document.querySelector("#address").textContent = `lat: ${activeLat} | lng:  ${activeLng}`;
     markerLocations.push([activeLat, activeLng]);
     console.log(`all locations: ${markerLocations}`);
 
